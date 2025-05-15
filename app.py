@@ -118,9 +118,9 @@ if show_map:
 
 
 # Відображення обраного графіка
-st.subheader("📊 Обраний графік")
 
 if chart_option == "Доходи на клієнта vs Витрати":
+    st.subheader("📊 Доходи на клієнта vs Витрати")
     chart = alt.Chart(df_filtered).mark_circle(size=60).encode(
         x='Expenses:Q',
         y='RevenuePerCustomer:Q',
@@ -130,12 +130,14 @@ if chart_option == "Доходи на клієнта vs Витрати":
     st.altair_chart(chart, use_container_width=True)
 
 elif chart_option == "Boxplot прибутку по галузях":
+    st.subheader("📊 Boxplot прибутку по галузях")
     fig, ax = plt.subplots(figsize=(10, 5))
     sns.boxplot(data=df_filtered, x="Industry", y="Profit", ax=ax)
     ax.set_title("Розподіл прибутку по галузях")
     st.pyplot(fig)
 
 elif chart_option == "Scatter: Прибуток vs Інвестиції":
+    st.subheader("📊 Scatter: Прибуток vs Інвестиції")
     chart = alt.Chart(df_filtered).mark_circle(size=60).encode(
         x='Investment:Q',
         y='Profit:Q',
@@ -145,6 +147,7 @@ elif chart_option == "Scatter: Прибуток vs Інвестиції":
     st.altair_chart(chart, use_container_width=True)
 
 elif chart_option == "Гістограма конверсії по галузях":
+    st.subheader("📊 Гістограма конверсії по галузях")
     fig, ax = plt.subplots(figsize=(10, 5))
     sns.barplot(data=df_filtered, x="Industry", y="ConversionRate", estimator="mean", ax=ax)
     ax.set_title("Середній Conversion Rate по галузях")
