@@ -17,6 +17,9 @@ import plotly.express as px
 from sklearn.linear_model import LinearRegression
 from sklearn.cluster import KMeans
 
+# Увімкнути темну тему
+alt.themes.enable("dark")
+
 df = pd.read_csv('streamlit_dataset.csv')
 
 st.set_page_config(
