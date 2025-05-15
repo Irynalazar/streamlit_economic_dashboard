@@ -64,7 +64,7 @@ st.sidebar.markdown(" **Автор**: Lazar_Iryna")
 # ---------------------------------
 df_filtered = df[
     (df["Year"] == selected_year) &
-    (df["Region"].isin(selected_regions)) &
+    (df["Region"].isin(selected_region)) &
     (df["Industry"].isin(selected_industry)) &
     (df["Scenario"] == selected_scenario) &
     (df["AdBudget"] <= selected_max_adbudget)
