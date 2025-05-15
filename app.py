@@ -65,12 +65,6 @@ chart_option = st.sidebar.radio(
         "Кластеризація компаній (KMeans)"
     ]
 )
-st.sidebar.markdown("Побудова регресії")
-numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
-
-reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
-reg_y = st.sidebar.selectbox("Оберіть змінну Y", numeric_columns, index=1)
-show_regression = st.sidebar.checkbox("Показати регресійну модель")
 
 
 # Інформаційний блок
@@ -139,6 +133,12 @@ if show_map:
         st.warning("Немає доступних координат для побудови карти.")
 
 
+st.sidebar.markdown("Побудова регресії")
+numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
+
+reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
+reg_y = st.sidebar.selectbox("Оберіть змінну Y", numeric_columns, index=1)
+show_regression = st.sidebar.checkbox("Показати регресійну модель")
 
 # --- Побудова регресійної моделі ---
 if show_regression:
