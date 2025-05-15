@@ -106,7 +106,9 @@ st.dataframe(df_filtered)
 if show_map:
     st.subheader("🗺 Географія компаній")
 
-    map_data = df_filtered[["Latitude", "Longitude"]].dropna()
+    map_data = df_filtered[["Latitude", "Longitude"]].dropna().rename(
+        columns={"Latitude": "latitude", "Longitude": "longitude"}
+    )
 
     if not map_data.empty:
         st.map(map_data)
