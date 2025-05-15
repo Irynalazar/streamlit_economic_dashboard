@@ -50,18 +50,16 @@ selected_max_adbudget = st.sidebar.slider(
 )
 # Чекбокси для відображення
 show_map = st.sidebar.checkbox("Показати карту компаній")
+
 # Перемикач графіків
 chart_option = st.sidebar.radio(
     "📈 Оберіть графік для перегляду:",
     # --- Блок регресії ---
 st.sidebar.markdown("Побудова регресії")
 numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
-
 reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
 reg_y = st.sidebar.selectbox("Оберіть змінну Y", numeric_columns, index=1)
 show_regression = st.sidebar.checkbox("Показати регресійну модель")
-
-
     [
         "Доходи на клієнта vs Витрати",
         "Boxplot прибутку по галузях",
