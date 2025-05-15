@@ -55,16 +55,6 @@ alt.themes.enable("dark")
 # Бічна панель / SIDEBAR
 st.sidebar.title("Панель фільтрації")
 
-# Кнопка скидання
-if st.sidebar.button("Скинути фільтри"):
-    st.session_state.year = default_year
-    st.session_state.regions = default_regions
-    st.session_state.industries = default_industries
-    st.session_state.scenario = default_scenario
-    st.session_state.max_adbudget = default_max_budget
-    st.experimental_rerun()
-
-
 # Фільтри з використанням session_state
 st.session_state.year = st.sidebar.selectbox("Оберіть рік", sorted(df["Year"].unique()), index=sorted(df["Year"].unique()).index(st.session_state.year))
 st.session_state.regions = st.sidebar.multiselect("Оберіть регіони", df["Region"].unique(), default=st.session_state.regions)
