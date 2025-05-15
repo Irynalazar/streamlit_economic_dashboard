@@ -48,6 +48,18 @@ selected_max_adbudget = st.sidebar.slider(
     value=int(df["AdBudget"].max()),
     step=1000
 )
+
+# ---------------------------------
+# Фільтрація
+# ---------------------------------
+df_filtered = df[
+    (df["Year"] == selected_year) &
+    (df["Region"].isin(selected_region)) &
+    (df["Industry"].isin(selected_industry)) &
+    (df["Scenario"] == selected_scenario) &
+    (df["AdBudget"] <= selected_max_adbudget)
+]
+
 # Чекбокси для відображення
 show_map = st.sidebar.checkbox("Показати карту компаній")
 
@@ -66,8 +78,10 @@ chart_option = st.sidebar.radio(
     ]
 )
 
+st.sidebar.markdown("---")
 
-
+# --- Блок регресії ---
+st.sidebar.markdown("Побудова регресії")
 numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
 
 reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
@@ -81,16 +95,7 @@ st.sidebar.markdown(" **Інструкція**: \nФільтруйте дані 
 st.sidebar.markdown(" **Автор**: Lazar_Iryna")
 st.sidebar.markdown("---")
 
-# ---------------------------------
-# Фільтрація
-# ---------------------------------
-df_filtered = df[
-    (df["Year"] == selected_year) &
-    (df["Region"].isin(selected_region)) &
-    (df["Industry"].isin(selected_industry)) &
-    (df["Scenario"] == selected_scenario) &
-    (df["AdBudget"] <= selected_max_adbudget)
-]
+
 
 
 # ---------------------------------
