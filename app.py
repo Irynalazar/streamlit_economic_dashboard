@@ -71,6 +71,7 @@ chart_option = st.sidebar.radio(
 st.sidebar.markdown("---")
 st.sidebar.markdown(" **Інструкція**: \nФільтруйте дані за параметрами і переглядайте графіки та таблиці на панелі праворуч.")
 st.sidebar.markdown(" **Автор**: Lazar_Iryna")
+st.sidebar.markdown("---")
 
 # ---------------------------------
 # Фільтрація
@@ -133,7 +134,7 @@ if show_map:
         st.warning("Немає доступних координат для побудови карти.")
 
 
-st.sidebar.markdown("Побудова регресії")
+
 numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
 
 reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
