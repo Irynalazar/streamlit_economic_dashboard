@@ -67,6 +67,14 @@ chart_option = st.sidebar.radio(
 )
 
 
+
+numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
+
+reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
+reg_y = st.sidebar.selectbox("Оберіть змінну Y", numeric_columns, index=1)
+show_regression = st.sidebar.checkbox("Показати регресійну модель")
+
+
 # Інформаційний блок
 st.sidebar.markdown("---")
 st.sidebar.markdown(" **Інструкція**: \nФільтруйте дані за параметрами і переглядайте графіки та таблиці на панелі праворуч.")
@@ -135,11 +143,6 @@ if show_map:
 
 
 
-numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
-
-reg_x = st.sidebar.selectbox("Оберіть змінну X", numeric_columns, index=0)
-reg_y = st.sidebar.selectbox("Оберіть змінну Y", numeric_columns, index=1)
-show_regression = st.sidebar.checkbox("Показати регресійну модель")
 
 # --- Побудова регресійної моделі ---
 if show_regression:
