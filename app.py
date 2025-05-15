@@ -95,15 +95,46 @@ if show_map:
     st.subheader("🗺 Географія компаній")
     st.map(df_filtered[['Latitude', 'Longitude']])
 
-# Scatter-графік ROI ~ Investment
-if show_scatter:
-    st.subheader("📉 ROI ~ Investment (Altair)")
+# Перемикач графіків
+chart_option = st.sidebar.radio(
+    "📈 Оберіть графік для перегляду:",
+    [
+        "Доходи на клієнта vs Витрати",
+        "Boxplot прибутку по галузях",
+        "Scatter: Прибуток vs Інвестиції",
+        "Гістограма конверсії по галузях"
+    ]
+)
+
+# Відображення обраного графіка
+st.subheader("📊 Обраний графік")
+
+if chart_option == "Доходи на клієнта vs Витрати":
+    chart = alt.Chart(df_filtered).mark_circle(size=60).encode(
+        x='Expenses:Q',
+        y='RevenuePerCustomer:Q',
+        color='Industry:N',
+        tooltip=['Company', 'Expenses', 'RevenuePerCustomer', 'Industry']
+    ).interactive().properties(title="Дохід на клієнта vs Витрати")
+    st.altair_chart(chart, use_container_width=True)
+
+elif chart_option == "Boxplot прибутку по галузях":
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.boxplot(data=df_filtered, x="Industry", y="Profit", ax=ax)
+    ax.set_title("Розподіл прибутку по галузях")
+    st.pyplot(fig)
+
+elif chart_option == "Scatter: Прибуток vs Інвестиції":
     chart = alt.Chart(df_filtered).mark_circle(size=60).encode(
         x='Investment:Q',
-        y='ROI:Q',
+        y='Profit:Q',
         color='Industry:N',
-        tooltip=['Company', 'Investment', 'ROI']
-    ).interactive().properties(
-        width=700, height=400
-    )
+        tooltip=['Company', 'Investment', 'Profit']
+    ).interactive().properties(title="Прибуток vs Інвестиції")
     st.altair_chart(chart, use_container_width=True)
+
+elif chart_option == "Гістограма конверсії по галузях":
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.barplot(data=df_filtered, x="Industry", y="ConversionRate", estimator="mean", ax=ax)
+    ax.set_title("Середній Conversion Rate по галузях")
+    st.pyplot(fig)
