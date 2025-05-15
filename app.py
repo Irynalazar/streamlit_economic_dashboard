@@ -79,25 +79,25 @@ st.session_state.max_adbudget = st.sidebar.slider(
     step=1000
 )
 # Чекбокси для відображення
-show_map = st.sidebar.checkbox("🗺 Показати карту компаній")
-show_scatter = st.sidebar.checkbox("📉 Показати графік ROI vs Investment")
+show_map = st.sidebar.checkbox("Показати карту компаній")
+show_scatter = st.sidebar.checkbox("Показати графік ROI vs Investment")
 
 # Інформаційний блок
 st.sidebar.markdown("---")
-st.sidebar.markdown("📘 **Інструкція**: \nФільтруйте дані за параметрами і переглядайте графіки та таблиці на панелі праворуч.")
-st.sidebar.markdown("👨‍💼 **Автор**: Data Science Department")
+st.sidebar.markdown(" **Інструкція**: \nФільтруйте дані за параметрами і переглядайте графіки та таблиці на панелі праворуч.")
+st.sidebar.markdown(" **Автор**: Lazar_Iryna")
 
 # ---------------------------------
-# 🔽 Фільтрація
+# Фільтрація
 # ---------------------------------
-
 df_filtered = df[
-    (df["Year"] == selected_year) &
-    (df["Region"].isin(selected_regions)) &
-    (df["Industry"].isin(selected_industries)) &
-    (df["Scenario"] == selected_scenario) &
-    (df["ROI"] >= min_roi)
+    (df["Year"] == st.session_state.year) &
+    (df["Region"].isin(st.session_state.regions)) &
+    (df["Industry"].isin(st.session_state.industries)) &
+    (df["Scenario"] == st.session_state.scenario) &
+    (df["AdBudget"] <= st.session_state.max_adbudget)
 ]
+
 
 # ---------------------------------
 # 🧾 Основна панель
