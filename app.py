@@ -31,25 +31,53 @@ st.set_page_config(
     }
 )
 
+# --- Ініціалізація фільтрів у session_state ---
+default_year = sorted(df["Year"].unique())[0]
+default_regions = list(df["Region"].unique())
+default_industries = list(df["Industry"].unique())
+default_scenario = df["Scenario"].unique()[0]
+default_max_budget = int(df["AdBudget"].max())
+
+if "year" not in st.session_state:
+    st.session_state.year = default_year
+if "regions" not in st.session_state:
+    st.session_state.regions = default_regions
+if "industries" not in st.session_state:
+    st.session_state.industries = default_industries
+if "scenario" not in st.session_state:
+    st.session_state.scenario = default_scenario
+if "max_adbudget" not in st.session_state:
+    st.session_state.max_adbudget = default_max_budget
+
 # Увімкнути темну тему
 alt.themes.enable("dark")
 
 # Бічна панель / SIDEBAR
 st.sidebar.title("Панель фільтрації")
 
-# Кнопка для скидання фільтрів (через query params або сесію)
+# Кнопка скидання
 if st.sidebar.button("Скинути фільтри"):
+    st.session_state.year = default_year
+    st.session_state.regions = default_regions
+    st.session_state.industries = default_industries
+    st.session_state.scenario = default_scenario
+    st.session_state.max_adbudget = default_max_budget
     st.experimental_rerun()
 
-# Фільтри
-selected_year = st.sidebar.selectbox("Оберіть рік", sorted(df["Year"].unique()))
-selected_regions = st.sidebar.multiselect("Регіони", df["Region"].unique(), default=df["Region"].unique())
-selected_industries = st.sidebar.multiselect("Галузі", df["Industry"].unique(), default=df["Industry"].unique())
-selected_scenario = st.sidebar.radio("Сценарій", df["Scenario"].unique())
 
-min_roi = st.sidebar.slider("Мінімальний ROI", min_value=round(df["ROI"].min(), 2),
-                            max_value=round(df["ROI"].max(), 2), value=0.0, step=0.05)
+# Фільтри з використанням session_state
+st.session_state.year = st.sidebar.selectbox("Оберіть рік", sorted(df["Year"].unique()), index=sorted(df["Year"].unique()).index(st.session_state.year))
+st.session_state.regions = st.sidebar.multiselect("Оберіть регіони", df["Region"].unique(), default=st.session_state.regions)
+st.session_state.industries = st.sidebar.multiselect("Оберіть галузі", df["Industry"].unique(), default=st.session_state.industries)
+st.session_state.scenario = st.sidebar.radio("Сценарій", df["Scenario"].unique(), index=list(df["Scenario"].unique()).index(st.session_state.scenario))
 
+st.session_state.max_adbudget = st.sidebar.slider(
+    "Максимальний рекламний бюджет",
+    min_value=int(df["AdBudget"].min()),
+    max_value=int(df["AdBudget"].max()),
+    value=st.session_state.max_adbudget,
+    step=1000
+)
 # Чекбокси для відображення
 show_map = st.sidebar.checkbox("🗺 Показати карту компаній")
 show_scatter = st.sidebar.checkbox("📉 Показати графік ROI vs Investment")
