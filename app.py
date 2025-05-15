@@ -78,7 +78,7 @@ chart_option = st.sidebar.radio(
 
 st.sidebar.markdown("---")
 
-# --- Блок регресії ---
+# Блок регресії 
 st.sidebar.markdown("Побудова регресії")
 numeric_columns = df_filtered.select_dtypes(include=np.number).columns.tolist()
 
