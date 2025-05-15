@@ -102,8 +102,24 @@ st.download_button(
     mime="text/csv"
 )
 
-# Таблиця результатів
-st.dataframe(df_filtered)
+
+# 📊 Інтерактивна таблиця результатів
+st.subheader("📋 Оберіть, які стовпці таблиці відображати")
+
+all_columns = df_filtered.columns.tolist()
+default_columns = ["Company", "Region", "Industry", "Profit", "ROI"]
+
+selected_columns = st.multiselect(
+    "Оберіть стовпці для перегляду",
+    options=all_columns,
+    default=[col for col in default_columns if col in all_columns]
+)
+
+if selected_columns:
+    st.dataframe(df_filtered[selected_columns])
+else:
+    st.info("Оберіть хоча б один стовпець, щоб побачити таблицю.")
+
 
 # Карта компаній
 if show_map:
