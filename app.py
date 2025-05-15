@@ -59,7 +59,9 @@ chart_option = st.sidebar.radio(
         "Доходи на клієнта vs Витрати",
         "Boxplot прибутку по галузях",
         "Scatter: Прибуток vs Інвестиції",
-        "Гістограма конверсії по галузях"
+        "Гістограма конверсії по галузях",
+        "Теплова карта кореляцій",
+        "Кластеризація компаній (KMeans)"
     ]
 )
 
@@ -103,7 +105,14 @@ st.dataframe(df_filtered)
 # Карта компаній
 if show_map:
     st.subheader("🗺 Географія компаній")
-    st.map(df_filtered[['Latitude', 'Longitude']])
+
+    map_data = df_filtered[["Latitude", "Longitude"]].dropna()
+
+    if not map_data.empty:
+        st.map(map_data)
+    else:
+        st.warning("Немає доступних координат для побудови карти.")
+
 
 
 # Відображення обраного графіка
@@ -138,3 +147,29 @@ elif chart_option == "Гістограма конверсії по галузя�
     sns.barplot(data=df_filtered, x="Industry", y="ConversionRate", estimator="mean", ax=ax)
     ax.set_title("Середній Conversion Rate по галузях")
     st.pyplot(fig)
+
+elif chart_option == "Теплова карта кореляцій":
+    st.subheader("📊 Теплова карта кореляцій")
+    numeric_cols = df_filtered.select_dtypes(include=[np.number])
+    corr = numeric_cols.corr()
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.heatmap(corr, annot=True, cmap='coolwarm', fmt=".2f", ax=ax)
+    ax.set_title("Кореляційна матриця числових показників")
+    st.pyplot(fig)
+
+elif chart_option == "Кластеризація компаній (KMeans)":
+    st.subheader("📊 Кластеризація компаній на основі ROI та Investment")
+    cluster_data = df_filtered[["ROI", "Investment"]].dropna()
+    if cluster_data.shape[0] >= 3:
+        kmeans = KMeans(n_clusters=3, random_state=0)
+        cluster_data["Cluster"] = kmeans.fit_predict(cluster_data)
+
+        chart = alt.Chart(cluster_data).mark_circle(size=60).encode(
+            x='Investment',
+            y='ROI',
+            color='Cluster:N',
+            tooltip=['ROI', 'Investment', 'Cluster']
+        ).interactive().properties(title="Кластеризація за ROI та Investment")
+        st.altair_chart(chart, use_container_width=True)
+    else:
+        st.warning("Недостатньо даних для кластеризації (потрібно ≥ 3 рядки).")
